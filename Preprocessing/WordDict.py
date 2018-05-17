@@ -6,7 +6,6 @@ sys.path.append('../')
 
 from Config import config
 
-
 class WordDict():
     def __init__(self):
         self.Word2IndexDic = {}
@@ -22,20 +21,20 @@ class WordDict():
     def special_words(self, word):
         # 处理非中文特殊字符
         if word.isdigit():
-            return 1  # '<DIGITS>'
+            return 2  # '<DIGITS>'
         elif sum([(0 if c in 'qwertyuiopasdfghjklzxcvbnm' else 1) for c in word.lower()])==0:
-            return 2  # '<ALPHA>'
+            return 3  # '<ALPHA>'
         elif sum([(0 if c in 'qwertyuiopasdfghjklzxcvbnm01234567890' else 1) for c in word.lower()])==0:
-            return 3  # '<ALPHA_NUM>'
+            return 4  # '<ALPHA_NUM>'
         else:
-            return 0  # '<UNKNOWN>'
+            return 1  # '<UNKNOWN>'
 
     def add_word(self, word):
         if self.check_contain_chinese(word) == False:
             self.Word2IndexDic[word] = self.special_words(word)
         else:
             if self.Word2IndexDic.get(word) == None:
-                self.Word2IndexDic[word] = len(self.Word2IndexDic)
+                self.Word2IndexDic[word] = len(self.Word2IndexDic) + 1
 
     def get_index(self,word):
         return self.Word2IndexDic.get(word)

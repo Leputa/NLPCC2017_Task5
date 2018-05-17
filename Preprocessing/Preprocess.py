@@ -5,19 +5,27 @@ sys.path.append('../')
 
 from Config import config
 from Config import langconv
-from WordDict import *
-from Tokenizer import *
+from Preprocessing.WordDict import *
+from Preprocessing.Tokenizer import *
 
 
-class Preprecessor():
+class Preprocessor():
 
     def __init__(self):
+        self.sentence_length = 50
+
         self.train_questions, self.test_questions = [],[]
         self.train_answers, self.test_answers = [],[]
         self.train_labels, self.test_labels = [],[]
 
         self.train_questions, self.train_answers, self.train_labels = self.load_train_data()
         self.test_questions, self.test_answers, self.test_labels = self.load_test_data()
+
+    def get_train_data(self):
+        return self.train_questions, self.train_answers, self.train_labels
+
+    def get_test_data(self):
+        return self.test_questions, self.test_answers, self.test_labels
 
     def load_train_data(self):
         print("导入训练数据")
@@ -209,17 +217,138 @@ class Preprecessor():
 
         return index_questions, index_answers, self.test_labels
 
+    def padding_train_data_forward(self):
+        # 填充值在后面
+        print("前向训练数据padding")
+
+        path = config.cache_prefix_path + 'train_forward_padding.pkl'
+        if os.path.exists(path):
+            with open(path, 'rb') as pkl:
+                return pickle.load(pkl)
+
+        padding_questions, padding_answers, padding_labels = self.get_train_index_data()
+
+        for i in range(len(padding_questions)):
+            if len(padding_questions[i]) > self.sentence_length:
+                padding_questions[i] = padding_questions[i][:self.sentence_length]
+            else:
+                pad = [0] * (self.sentence_length - len(padding_questions[i]))
+                padding_questions[i] += pad
+
+            if len(padding_answers[i]) > self.sentence_length:
+                padding_answers[i] = padding_answers[i][:self.sentence_length]
+            else:
+                pad = [0] * (self.sentence_length - len(padding_answers[i]))
+                padding_answers[i] += pad
+
+        with open(path, 'wb') as pkl:
+            pickle.dump((padding_questions, padding_answers, padding_labels),pkl)
+
+        return padding_questions, padding_answers, padding_labels
+
+    def padding_test_data_forward(self):
+        # 填充值在后面
+        print("前向测试数据padding")
+
+        path = config.cache_prefix_path + 'test_forward_padding.pkl'
+        if os.path.exists(path):
+            with open(path, 'rb') as pkl:
+                return pickle.load(pkl)
+
+        padding_questions, padding_answers, padding_labels = self.get_test_index_data()
+
+        for i in range(len(padding_questions)):
+            if len(padding_questions[i]) > self.sentence_length:
+                padding_questions[i] = padding_questions[i][:self.sentence_length]
+            else:
+                pad = [0] * (self.sentence_length - len(padding_questions[i]))
+                padding_questions[i] += pad
+
+            if len(padding_answers[i]) > self.sentence_length:
+                padding_answers[i] = padding_answers[i][:self.sentence_length]
+            else:
+                pad = [0] * (self.sentence_length - len(padding_answers[i]))
+                padding_answers[i] += pad
+
+        with open(path, 'wb') as pkl:
+            pickle.dump((padding_questions, padding_answers, padding_labels),pkl)
+
+        return padding_questions, padding_answers, padding_labels
+
+    def padding_train_data_backward(self):
+        # 填充值在前面
+        print("后向训练数据padding")
+
+        path = config.cache_prefix_path + 'train_backward_padding.pkl'
+        if os.path.exists(path):
+            with open(path, 'rb') as pkl:
+                return pickle.load(pkl)
+
+        padding_questions, padding_answers, padding_labels = self.get_train_index_data()
+
+        for i in range(len(padding_questions)):
+            if len(padding_questions[i]) > self.sentence_length:
+                padding_questions[i] = padding_questions[i][-self.sentence_length:]
+            else:
+                pad = [0] * (self.sentence_length - len(padding_questions[i]))
+                padding_questions[i] = pad + padding_questions[i]
+
+            if len(padding_answers[i]) > self.sentence_length:
+                padding_answers[i] = padding_answers[i][-self.sentence_length:]
+            else:
+                pad = [0] * (self.sentence_length - len(padding_answers[i]))
+                padding_answers[i] = pad + padding_answers[i]
+
+        with open(path, 'wb') as pkl:
+            pickle.dump((padding_questions, padding_answers, padding_labels),pkl)
+
+        return padding_questions, padding_answers, padding_labels
+
+    def padding_test_data_backward(self):
+        # 填充值在前面
+        print("后向测试数据padding")
+
+        path = config.cache_prefix_path + 'test_backward_padding.pkl'
+        if os.path.exists(path):
+            with open(path, 'rb') as pkl:
+                return pickle.load(pkl)
+
+        padding_questions, padding_answers, padding_labels = self.get_test_index_data()
+
+        for i in range(len(padding_questions)):
+            if len(padding_questions[i]) > self.sentence_length:
+                padding_questions[i] = padding_questions[i][-self.sentence_length:]
+            else:
+                pad = [0] * (self.sentence_length - len(padding_questions[i]))
+                padding_questions[i] = pad + padding_questions[i]
+
+            if len(padding_answers[i]) > self.sentence_length:
+                padding_answers[i] = padding_answers[i][-self.sentence_length:]
+            else:
+                pad = [0] * (self.sentence_length - len(padding_answers[i]))
+                padding_answers[i] = pad + padding_answers[i]
+
+        with open(path, 'wb') as pkl:
+            pickle.dump((padding_questions, padding_answers, padding_labels),pkl)
+
+        return padding_questions, padding_answers, padding_labels
 
 if __name__ == '__main__':
-    propressor = Preprecessor()
+    preprossor = Preprocessor()
 
-    propressor.train_group()
-    propressor.test_group()
+    preprossor.train_group()
+    preprossor.test_group()
 
-    word2IndexDic = propressor.word2index()
-    train_questions, train_answers, train_labels = propressor.load_train_data()
-    train_index_questions, train_index_answers, train_labels = propressor.get_train_index_data()
-    test_index_questions, test_index_answers, test_labels = propressor.get_test_index_data()
+    preprossor.padding_train_data_forward()
+    preprossor.padding_test_data_forward()
+
+    preprossor.padding_train_data_backward()
+    preprossor.padding_test_data_backward()
+
+    word2IndexDic = preprossor.word2index()
+
+    train_index_questions, train_index_answers, train_labels = preprossor.get_train_index_data()
+    test_index_questions, test_index_answers, test_labels = preprossor.get_test_index_data()
 
 
 
