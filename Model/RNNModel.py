@@ -55,6 +55,10 @@ class RNNModel():
 
         return pred, accuracy, loss, train_op
 
+    def add_prob(self, pred):
+        prob = tf.nn.softmax(pred)
+        return prob
+
     def train(self, embeddings='Leputa', cell='LSTM', tag='forward'):
 
         pred, accuracy, loss, train_op = self.inference(embeddings, cell, tag)
@@ -89,7 +93,7 @@ class RNNModel():
                     sess.run(train_op, feed_dict={self.question_inputs: question_batch,
                                                   self.answer_inputs: answer_batch,
                                                   self.label_inputs: label_batch})
-                    if iteration%256 == 0:
+                    if iteration%128 == 0:
                         acc_train = accuracy.eval(feed_dict = {self.question_inputs: question_batch,
                                                                self.answer_inputs: answer_batch,
                                                                self.label_inputs: label_batch})
@@ -135,11 +139,15 @@ class RNNModel():
             acc_test = acc_test/(len(test_data[0])//self.batch_size)
             print("best test accuracy: {:.4f}%".format(acc_test * 100))
 
-            save_path = saver.save(sess, config.model_prefix_path + cell + '_model_' + tag + '_best')
+            saver.save(sess, config.model_prefix_path + cell + '_model_' + tag + '_best')
 
 
     def eval(self, embeddings='Leputa', cell='LSTM', tag='forward'):
+        tf.reset_default_graph()
+
         pred, accuracy, loss, train_op = self.inference(embeddings, cell, tag)
+        prob = self.add_prob(pred)
+
         saver = tf.train.Saver()
 
         if tag == 'forward':
@@ -152,18 +160,26 @@ class RNNModel():
             test_results = []
 
             init.run()
-            ckpt = tf.train.get_checkpoint_state(config.model_prefix_path + cell + '_model_' + tag + '_best')
+            saver.restore(sess, config.model_prefix_path + cell + '_model_' + tag + '_best')
             for step in tqdm(range(len(test_data[0])//self.batch_size + 1)):
                 test_question_batch, test_answer_batch, test_label_batch = self.get_batch(step, test_data)
-                sess.run(pred, feed_dict={self.question_inputs: test_question_batch,
+                sess.run(prob, feed_dict={self.question_inputs: test_question_batch,
                                           self.answer_inputs: test_answer_batch,
                                           self.label_inputs: test_label_batch})
-                batch_pred = pred.eval(feed_dict={self.question_inputs: test_question_batch,
+
+                batch_prob = prob.eval(feed_dict={self.question_inputs: test_question_batch,
                                                   self.answer_inputs: test_answer_batch,
                                                   self.label_inputs: test_label_batch})
-                batch_pred = np.argmax(batch_pred, axis=1)
 
-                test_results.extend(batch_pred.tolist())
+                test_results.extend(batch_prob[:,1].tolist())
+
+        start = 0
+        test_group = self.preprocessor.test_group()
+        for group_num in test_group:
+            tmp_results = test_results[start:start+group_num]
+            max_index = start + tmp_results.index(max(tmp_results))
+            test_results[max_index] = 1
+            start += group_num
 
         with open(config.eval_prefix_path + 'testing.score.txt','w') as fr:
             for result in test_results:
@@ -191,7 +207,7 @@ class RNNModel():
     def add_Output(self,bn_qa_vec):
         xavier_init = tf.contrib.layers.xavier_initializer()
         with tf.name_scope("hidden"):
-            h = tf.layers.dense(bn_qa_vec, self.n_hidden_mlp, activation=tf.nn.relu, kernel_initializer=xavier_init)
+            h = tf.layers.dense(bn_qa_vec, self.n_hidden_mlp, activation=tf.nn.tanh, kernel_initializer=xavier_init)
             h_drop = tf.nn.dropout(h, keep_prob=0.5)
         with tf.name_scope("output"):
             pred = tf.layers.dense(h_drop, self.n_out, kernel_initializer=xavier_init)
