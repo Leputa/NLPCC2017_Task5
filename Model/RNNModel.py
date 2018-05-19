@@ -112,7 +112,7 @@ class RNNModel():
 
                         print("Epoch {}, Iteration {}, train accuracy: {:.4f}%, test accuracy: {:.4f}%.".format(epoch, iteration, acc_train * 100, acc_test * 100))
                         print("Epoch {}, Iteration {}, train loss: {:.4f}, test loss: {:.4f}.".format(epoch, iteration, loss_train, loss_test))
-                        saver.save(sess, config.model_prefix_path + cell + '_model_' + 'tag')
+                        saver.save(sess, config.model_prefix_path + cell + '_model_' + tag)
 
                         if loss_test < best_loss_test:
                             best_loss_test = loss_test
