@@ -1,5 +1,7 @@
 import tensorflow as tf
 import numpy as np
+import os
+from tqdm import tqdm
 
 import sys
 sys.path.append("../")
@@ -241,25 +243,139 @@ class AB_CNN():
         return dot_products / (norm1 * norm2)
 
     def train(self):
+        save_path = config.save_path + self.model_type + '/'
+
         self.define_model()
 
         (train_questions, train_answers, train_labels) = self.preprocessor.padding_data('train')
+        length = len(train_questions)
 
         (test_questions, test_answers, test_labels) = self.preprocessor.padding_data('test')
         test_questions = np.array(test_questions)
         test_answers = np.array(test_answers)
         test_labels = np.array(test_labels)
 
-        optimizer = tf.train.AdamOptimizer(self.lr, name='optimizer').minimize(self.cost)
-
-        init = tf.global_variables_initializer()
-        saver = tf.train.Saver()
+        global_steps = tf.Variable(0, name='global_step', trainable=False)
+        optimizer = tf.train.AdamOptimizer(self.lr, name='optimizer').minimize(self.cost, global_step=global_steps)
+        
+        # 为了提前停止训练
+        best_loss_test = np.infty
+        checks_since_last_progress = 0
+        max_checks_without_progress = 20
+        best_model_params = None
 
         with tf.Session() as sess:
-            sess.run(init)
+            sess.run(tf.global_variables_initializer())
+            saver = tf.train.Saver(tf.global_variables())
+
+            if os.path.exists(save_path):
+                ckpt = tf.train.get_checkpoint_state(save_path)
+                saver.restore(sess, ckpt.model_checkpoint_path)
+            else:
+                os.makedirs(save_path)
 
             for epoch in range(self.n_epoch):
+                for iteration in range(length//self.batch + 1):
+                    train_feed_dict = self.gen_train_dict(iteration, train_questions, train_answers, train_labels, True)
+                    sess.run(optimizer, feed_dict = train_feed_dict)
 
+                    current_step = tf.train.global_step(sess, global_steps)
+
+                    train_loss = self.cost.eval(feed_dict = train_feed_dict)
+                    train_acc = self.accuracy.eval(feed_dict = train_feed_dict)
+                    print("Epoch {}, Iteration {}, train loss: {:.4f}, train accuracy: {:.4f}%.".format(epoch, current_step, train_loss, train_acc*100))
+
+                    if iteration % 128 == 0:
+                        test_feed_dict = self.gen_test_dict(test_questions, test_answers, test_labels)
+                        test_loss = self.cost.eval(feed_dict = test_feed_dict)
+                        test_acc = self.accuracy.eval(feed_dict = test_feed_dict)
+                        print("**********************************************************************************************************")
+                        print(print("Epoch {}, Iteration {}, test loss: {:.4f}, test accuracy: {:.4f}%.".format(epoch, current_step, test_loss, test_acc*100)))
+                        print("**********************************************************************************************************")
+                        checkpoint_path = os.path.join(save_path, 'model.ckpt')
+                        saver.save(sess, checkpoint_path, global_step = current_step)
+
+                        if test_loss < best_loss_test:
+                            best_loss_test = test_loss
+                            checks_since_last_progress = 0
+                            best_model_params = tool.get_model_params()
+                        else:
+                            checks_since_last_progress += 1
+
+                        if checks_since_last_progress>max_checks_without_progress:
+                            print("Early Stopping")
+                            break
+                if checks_since_last_progress > max_checks_without_progress:
+                    break
+
+            if best_model_params:
+                tool.restore_model_params(best_model_params)
+            saver.save(sess, os.path.join(save_path, 'best_model.ckpt'))
+
+    def test(self):
+        save_path = config.cache_prefix_path + self.model_type + '/'
+        assert os.path.isdir(save_path)
+
+        test_questions, test_answers, test_labels = self.preprocessor.padding_data('test')
+
+        tf.reset_default_graph()
+
+        self.define_model()
+        saver = tf.train.Saver(tf.global_variables())
+
+        init = tf.global_variables_initializer()
+        with tf.Session() as sess:
+            test_results = []
+            init.run()
+            saver.restore(sess, os.path.join(save_path, 'best_model.ckpt'))
+
+            for step in tqdm(range(len(test_questions)//self.batch_size + 1)):
+                test_feed_dict = self.gen_train_dict(step, test_questions, test_answers, test_labels, False)
+                pred = sess.run(self.prediction, feed_dict = feed_dict)
+                test_results.extend(pred.tolist())
+
+        test_group =self.preprocessor.group('test'):
+        start = 0 
+        for group_num in test_group:
+            tmp_results = test_results[start: start+group_num]
+            index = start + tmp_results.index(max(tmp_results))
+            test_results[index] = 1
+            start += group_num
+
+        with open(config.eval_prefix_path + self.model_type + 'testing.score.txt') as fr:
+            for result in test_results:
+                fr.write(str(result) + '\t')
+
+    def gen_test_dict(self, test_questions, test_answers, test_labels):
+        test_index = np.random.randint(0, len(test_questions), [1024])
+        test_question_batch = test_questions[test_index]
+        test_answer_batch = test_answers[test_index]
+        test_label_batch = test_labels[test_index]
+
+        test_feed_dict = {
+            self.question: test_question_batch,
+            self.answer: test_answer_batch,
+            self.label: test_label_batch,
+            self.trainable: False
+        }
+
+        return test_feed_dict
+
+    def gen_train_dict(self, iteration, train_questions, train_answers, train_labels, trainable):
+        start = iteration * self.batch_size
+        end = min((start + self.batch_size), len(train_questions))
+        question_batch = train_questions[start:end]
+        answer_batch = train_answers[start:end]
+        label_batch = train_labels[start:end]
+
+        feed_dict = {
+            self.question: question_batch,
+            self.answer: answer_batch,
+            self.label: label_batch,
+            self.trainable: trainable 
+        }
+
+        return feed_dict
 
 
 if __name__ == '__main__':

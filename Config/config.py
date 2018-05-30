@@ -3,6 +3,7 @@ import os
 data_prefix_path = '../data/'
 model_prefix_path = '../Model/model/'
 eval_prefix_path = '../evaltool/'
+save_prefix_path = '../save/'
 
 TRAIN_FILE = data_prefix_path + 'nlpcc-iccpol-2016.dbqa.training-data'
 TEST_FILE = data_prefix_path + 'nlpcc-iccpol-2016.dbqa.testing-data'
