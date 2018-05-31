@@ -20,7 +20,7 @@ class AB_CNN():
         self.embedding = Embeddings()
         self.lr = 0.05
         self.batch_size = 64
-        self.n_epoch = 25
+        self.n_epoch = 18
 
         self.sentence_length = self.preprocessor.sentence_length
         self.w = 4
