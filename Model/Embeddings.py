@@ -1,6 +1,7 @@
 import pickle
 import os
 import numpy as np
+from tqdm import tqdm
 import sys
 sys.path.append('../')
 
@@ -14,7 +15,7 @@ from gensim.models import Word2Vec
 class Embeddings():
     def __init__(self):
         self.scale = 0.1
-        self.vec_dim = 50
+        self.vec_dim = 64
         self.preprocessor = Preprocess.Preprocessor()
 
     def get_word_base(self):
@@ -111,16 +112,17 @@ class Embeddings():
             with open(path, 'rb') as pkl:
                 return pickle.load(pkl)
 
-        word_emb = KeyedVectors.load_word2vec_format(config.WIKI_EMBEDDING_MATRIX)
+        word_emb = KeyedVectors.load_word2vec_format(config.WIKI_EMBEDDING_MATRIX, binary=True)
         word2index = self.preprocessor.word2index()
 
         vocal_size = len(word2index)
-        index2vec = np.zeros((vocal_size + 1, self.vec_dim), dtype="float32")
-        index2vec[0] = np.zeros(self.vec_dim)
+        index2vec = np.ones((vocal_size, self.vec_dim), dtype="float32") * 0.01
         unk_count = 0
 
         for word in word2index:
             index = word2index[word]
+            if index == 0:
+                continue
             vec, flag = self.word2vec(word_emb, word, self.scale, self.vec_dim)
             index2vec[index] = vec
             unk_count += flag
@@ -136,5 +138,4 @@ class Embeddings():
 
 if __name__ == '__main__':
     embedding = Embeddings()
-    model = embedding.get_embedding_matrix()
     embedding.get_wiki_embedding_matrix()

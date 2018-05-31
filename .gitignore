@@ -1,7 +1,2 @@
 Cache/*
-data/zhwiki_2017_03.sg_50d.word2vec
-Model/model/*
-evaltool/testing.bat
-evaltool/testing.QApair.txt
-evaltool/testing.result.txt
-evaltool/testing.score.txt
+

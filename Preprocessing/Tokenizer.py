@@ -1,15 +1,17 @@
 import sys
 sys.path.append("../")
 
-import jieba
+
 import string
 from Config import config
-
+import jieba
+import jieba.analyse
+import jieba.posseg as pseg
 
 
 class Tokenizer():
     def __init__(self):
-        self.stopwords = self.get_stop_words()
+        self.stop_words_path = config.data_prefix_path + 'stopwords.txt'
         self.punc = string.punctuation
 
     def replace_line(self,line):
@@ -18,23 +20,20 @@ class Tokenizer():
             .replace('！', '!').replace('？', '?')\
             .replace('“', '"').replace('”', '"')
 
-    def get_stop_words(self):
-        stopWords = []
-        with open(config.data_prefix_path + 'stopwords.txt','r',encoding='utf-8') as fr:
-            lines = fr.readlines()
-            for line in lines:
-                if line.strip() != '':
-                    stopWords.append(line.strip())
-        return stopWords
-
-    def parser(self,line):
+    def parser(self, line):
         # 汉语分词
         line = self.replace_line(line)
-        seg_list = jieba.lcut(line)
+        jieba.analyse.set_stop_words(self.stop_words_path)
+        words = pseg.cut(line)
+        word_list = []
 
-        return [word for word in seg_list if word!=" " and word not in self.punc and word not in self.stopwords]
+        for w in words:
+            word_list.append(w.word)
+
+        return word_list
 
 
 if __name__ == '__main__':
     tokenizer = Tokenizer()
-    print(tokenizer.get_stop_words())
+    wordlist = tokenizer.parser('高富帅是宇宙第一帅')
+    print(wordlist)
