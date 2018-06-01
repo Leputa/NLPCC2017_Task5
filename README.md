@@ -10,8 +10,8 @@
             <td>MRR</td>
         </tr>
         <tr>
-            <td>0.3879</td>
-            <td>0.3885</td>
+            <td>0.3897</td>
+            <td>0.3902</td>
         </tr>
     </table>
     

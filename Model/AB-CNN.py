@@ -13,7 +13,7 @@ from Model.Embeddings import Embeddings
 
 class AB_CNN():
 
-    def __init__(self, model_type="ABCNN3"):
+    def __init__(self, model_type="ABCNN3", clip_gradients=True):
         self.model_type = model_type
 
         self.preprocessor = Preprocess.Preprocessor()
@@ -29,6 +29,9 @@ class AB_CNN():
         self.vec_dim = self.embedding.vec_dim
         self.num_classes = 2
         self.num_layers = 1
+
+        self.clip_gradients = clip_gradients
+        self.max_grad_norm = 5.
 
         self.vocab_size = 212237
 
@@ -126,8 +129,9 @@ class AB_CNN():
             question_attention, answer_attention = None, None
 
             if self.model_type == 'ABCNN2' or self.model_type == 'ABCNN3':
-                # matrix A [batch_size, sentence_length - w + 1, sentence_length - w + 1]
+                # matrix A [batch_size, sentence_length + w - 1, sentence_length + w - 1]
                 att_mat_A = self.make_attention_mat(question_conv, answer_conv)
+                # [batch_size, sentence_length + w - 1]
                 question_attention, answer_attention = tf.reduce_sum(att_mat_A, axis=2), tf.reduce_sum(att_mat_A, axis=1)
 
             question_wp = self.w_pool(variable_scope='question', x=question_conv, attention=question_attention)
@@ -199,7 +203,7 @@ class AB_CNN():
         # x1  [batch_size, vec_dim, sentence_length, 1]
         # tf.matrix_transpose(x2) [batch_size, vec_dim, 1, sentence_length]
 
-        # 这一步的广播想得不是很明白
+        # 广播产生一个 [sentence_length_0, sentence_length_1]的矩阵
         # x1 - tf.matrix_transpose(x2)  [batch_size, vec_dim, sentence_length, sentence_length]
         # euclidean [bath_size, sentence_length, sentence_length]
         euclidean = tf.sqrt(tf.reduce_sum(tf.square(x1 - tf.matrix_transpose(x2)), axis=1))
@@ -259,7 +263,19 @@ class AB_CNN():
 
         global_steps = tf.Variable(0, name='global_step', trainable=False)
         #self.optimizer = tf.train.AdamOptimizer(self.lr, name='optimizer').minimize(self.cost)
-        self.optimizer = tf.train.AdagradOptimizer(self.lr, name='optimizer').minimize(self.cost, global_step=global_steps)
+        if self.clip_gradients == True:
+            optimizer = tf.train.AdagradOptimizer(self.lr)
+
+            grads_and_vars = optimizer.compute_gradients(self.cost)
+            gradients = [output[0] for output in grads_and_vars]
+            variables = [output[1] for output in grads_and_vars]
+
+            gradients = tf.clip_by_global_norm(gradients, clip_norm=self.max_grad_norm)[0]
+            self.grad_norm = tf.global_norm(gradients)
+
+            self.trani_op = optimizer.apply_gradients(zip(gradients, variables), global_step=global_steps)
+        else:
+            self.train_op = tf.train.AdagradOptimizer(self.lr, name='optimizer').minimize(self.cost, global_step=global_steps)
 
 
         # 为了提前停止训练
@@ -284,8 +300,7 @@ class AB_CNN():
             for epoch in range(self.n_epoch):
                 for iteration in range(length//self.batch_size):
                     train_feed_dict = self.gen_train_dict(iteration, train_questions, train_answers, train_labels, True)
-                    _, train_loss, train_acc, current_step = sess.run([self.optimizer,self.cost,self.accuracy,global_steps], feed_dict = train_feed_dict)
-                    #current_step = tf.train.global_step(sess, global_steps)
+                    _, train_loss, train_acc, current_step = sess.run([self.train_op, self.cost, self.accuracy,global_steps], feed_dict = train_feed_dict)
                     if current_step % 128 == 0:
                         test_feed_dict = self.gen_test_dict(test_questions, test_answers, test_labels)
                         test_loss = self.cost.eval(feed_dict = test_feed_dict)
@@ -318,7 +333,7 @@ class AB_CNN():
             #
             # if best_model_params:
             #     tool.restore_model_params(best_model_params)
-            # saver.save(sess, os.path.join(save_path, 'model.ckpt'))
+            # saver.save(sess, os.path.join(save_path, 'best_model.ckpt'))
 
     def test(self):
         save_path = config.save_prefix_path + self.model_type + '/'
@@ -337,6 +352,7 @@ class AB_CNN():
             init.run()
             ckpt = tf.train.get_checkpoint_state(save_path)
             saver.restore(sess, ckpt.model_checkpoint_path)
+            # saver.restore(sess, os.path.join(save_path, 'best_model.ckpt'))
 
             for step in tqdm(range(len(test_questions)//self.batch_size + 1)):
                 test_feed_dict = self.gen_train_dict(step, test_questions, test_answers, test_labels, False)
@@ -387,7 +403,7 @@ class AB_CNN():
         return feed_dict
 
 if __name__ == '__main__':
-    ABCNN = AB_CNN(model_type='ABCNN2')
+    ABCNN = AB_CNN(model_type='ABCNN2', clip_gradients=False)
     #ABCNN.train()
     ABCNN.test()
 
