@@ -27,4 +27,16 @@
         </tr>
     </table>
 
+* Rank-CNN  
+论文地址：http://eecs.csuohio.edu/~sschung/CIS660/RankShortTextCNNACM2015.pdf
+    <table>
+        <tr>
+            <td>MAP</td>
+            <td>MRR</td>
+        </tr>
+        <tr>
+            <td>0.5012</td>
+            <td>0.5017</td>
+        </tr>
+
     

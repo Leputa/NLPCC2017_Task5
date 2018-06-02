@@ -2,6 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ba208c9-283f-4b77-83fe-cccd5e249d6a" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN1testing.bat" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN1testing.result.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN1testing.score.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN2testing.bat" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN2testing.result.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN2testing.score.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN3testing.bat" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN3testing.result.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaltool/ABCNN3testing.score.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/AB-CNN.py" afterPath="$PROJECT_DIR$/Model/AB-CNN.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
@@ -26,32 +35,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Preprocess.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Preprocessing/Preprocess.py">
+      <file leaf-file-name="AB-CNN.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Model/AB-CNN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="362">
+              <caret line="375" column="64" lean-forward="false" selection-start-line="375" selection-start-column="64" selection-end-line="375" selection-end-column="64" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Tokenizer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Preprocessing/Tokenizer.py">
+      <file leaf-file-name="Rank-CNN.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Model/Rank-CNN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WordDict.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Preprocessing/WordDict.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="361">
+              <caret line="296" column="42" lean-forward="true" selection-start-line="296" selection-start-column="42" selection-end-line="296" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -59,31 +62,11 @@
       <file leaf-file-name="Embeddings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Model/Embeddings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2486">
+            <state relative-caret-position="2574">
               <caret line="117" column="35" lean-forward="false" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="35" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AB-CNN.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Model/AB-CNN.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-748">
-              <caret line="37" column="32" lean-forward="true" selection-start-line="37" selection-start-column="32" selection-end-line="37" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tool.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Config/tool.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1056">
-              <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -127,13 +110,17 @@
         <option value="$PROJECT_DIR$/Config/config.py" />
         <option value="$PROJECT_DIR$/Preprocessing/Tokenizer.py" />
         <option value="$PROJECT_DIR$/Preprocessing/Preprocess.py" />
+        <option value="$PROJECT_DIR$/Model/Pair-CNN.py" />
         <option value="$PROJECT_DIR$/Model/AB-CNN.py" />
+        <option value="$PROJECT_DIR$/Model/Rank-CNN.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="960" />
-    <option name="height" value="1040" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -150,7 +137,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -207,7 +194,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -225,7 +212,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.AB-CNN">
+  <component name="RunManager" selected="Python.Rank-CNN">
     <configuration default="false" name="Embeddings" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -280,24 +267,6 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="tool" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Config" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="NLPCC2017_Task5" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Config/tool.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="AB-CNN" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -311,6 +280,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="NLPCC2017_Task5" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Model/AB-CNN.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Rank-CNN" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Model" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="NLPCC2017_Task5" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Model/Rank-CNN.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -384,16 +371,16 @@
       <item index="0" class="java.lang.String" itemvalue="Python.Embeddings" />
       <item index="1" class="java.lang.String" itemvalue="Python.Tokenizer" />
       <item index="2" class="java.lang.String" itemvalue="Python.Preprocess" />
-      <item index="3" class="java.lang.String" itemvalue="Python.tool" />
-      <item index="4" class="java.lang.String" itemvalue="Python.AB-CNN" />
+      <item index="3" class="java.lang.String" itemvalue="Python.AB-CNN" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Rank-CNN" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.AB-CNN" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Preprocess" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Tokenizer" />
-        <item index="3" class="java.lang.String" itemvalue="Python.Embeddings" />
-        <item index="4" class="java.lang.String" itemvalue="Python.tool" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Rank-CNN" />
+        <item index="1" class="java.lang.String" itemvalue="Python.AB-CNN" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Preprocess" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Tokenizer" />
+        <item index="4" class="java.lang.String" itemvalue="Python.Embeddings" />
       </list>
     </recent_temporary>
   </component>
@@ -411,19 +398,18 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="960" height="1040" extended-state="1" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.026483051" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48520085" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.6688172" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -444,22 +430,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Model/Embeddings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Preprocessing/Preprocess.py" />
     <entry file="file://$PROJECT_DIR$/Config/tool.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="15" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -488,7 +462,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -516,7 +489,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -637,27 +609,22 @@
     <entry file="file://$PROJECT_DIR$/Model/layers.py" />
     <entry file="file://$PROJECT_DIR$/Config/tool.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1056">
+        <state relative-caret-position="845">
           <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model/Embeddings.py">
+    <entry file="file://$PROJECT_DIR$/Preprocessing/WordDict.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2486">
-          <caret line="117" column="35" lean-forward="false" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Config/config.py">
+    <entry file="file://$PROJECT_DIR$/Preprocessing/Tokenizer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -669,27 +636,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Preprocessing/Tokenizer.py">
+    <entry file="file://$PROJECT_DIR$/Config/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="374">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Preprocessing/WordDict.py">
+    <entry file="file://$PROJECT_DIR$/Model/Pair-CNN.py" />
+    <entry file="file://$PROJECT_DIR$/Model/Embeddings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="2574">
+          <caret line="117" column="35" lean-forward="false" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Model/AB-CNN.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-748">
-          <caret line="37" column="32" lean-forward="true" selection-start-line="37" selection-start-column="32" selection-end-line="37" selection-end-column="32" />
-          <folding />
+        <state relative-caret-position="362">
+          <caret line="375" column="64" lean-forward="false" selection-start-line="375" selection-start-column="64" selection-end-line="375" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/Rank-CNN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="296" column="42" lean-forward="true" selection-start-line="296" selection-start-column="42" selection-end-line="296" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

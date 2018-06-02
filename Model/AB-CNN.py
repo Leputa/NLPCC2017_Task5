@@ -49,12 +49,12 @@ class AB_CNN():
             embedding_matrix = tf.get_variable('embedding', [self.vocab_size, self.vec_dim], dtype=tf.float32)
             embedding_matrix_fixed = tf.stop_gradient(embedding_matrix, name='embedding_fixed')
 
-            self.question_inputs = question_inputs = tf.cond(self.trainable,
+            question_inputs = tf.cond(self.trainable,
                                       lambda: tf.nn.embedding_lookup(embedding_matrix, self.question),
                                       lambda: tf.nn.embedding_lookup(embedding_matrix_fixed, self.question))
-            self.answer_inputs = answer_inputs = tf.cond(self.trainable,
-                                        lambda: tf.nn.embedding_lookup(embedding_matrix, self.answer),
-                                        lambda: tf.nn.embedding_lookup(embedding_matrix_fixed, self.answer))
+            answer_inputs = tf.cond(self.trainable,
+                                    lambda: tf.nn.embedding_lookup(embedding_matrix, self.answer),
+                                    lambda: tf.nn.embedding_lookup(embedding_matrix_fixed, self.answer))
 
             question_inputs = tf.transpose(question_inputs, perm=[0, 2, 1])
             answer_inputs = tf.transpose(answer_inputs, perm=[0, 2, 1])
@@ -373,7 +373,7 @@ class AB_CNN():
             test_results[index] = 1
             start += group_num
 
-        with open(config.eval_prefix_path + self.model_type + 'testing.score.txt', 'w') as fr:
+        with open(config.eval_prefix_path + self.model_type + '-testing.score.txt', 'w') as fr:
             for result in test_results:
                 fr.write(str(result) + '\n')
 
