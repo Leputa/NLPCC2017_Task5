@@ -10,6 +10,7 @@ from Config import config
 from Config import tool
 from Preprocessing import Preprocess
 from Model.Embeddings import Embeddings
+from tensorflow.python import debug as tf_debug
 
 class AB_CNN():
 
@@ -20,7 +21,7 @@ class AB_CNN():
         self.embedding = Embeddings()
         self.lr = 0.05
         self.batch_size = 64
-        self.n_epoch = 18
+        self.n_epoch = 12
 
         self.sentence_length = self.preprocessor.sentence_length
         self.w = 4
@@ -28,10 +29,11 @@ class AB_CNN():
         self.di = 50                               # The number of convolution kernels
         self.vec_dim = self.embedding.vec_dim
         self.num_classes = 2
-        self.num_layers = 1
+        self.num_layers = 2
 
         self.clip_gradients = clip_gradients
         self.max_grad_norm = 5.
+        self.eclipse = 1e-9
 
         self.vocab_size = 212237
 
@@ -206,7 +208,7 @@ class AB_CNN():
         # 广播产生一个 [sentence_length_0, sentence_length_1]的矩阵
         # x1 - tf.matrix_transpose(x2)  [batch_size, vec_dim, sentence_length, sentence_length]
         # euclidean [bath_size, sentence_length, sentence_length]
-        euclidean = tf.sqrt(tf.reduce_sum(tf.square(x1 - tf.matrix_transpose(x2)), axis=1))
+        euclidean = tf.sqrt(tf.reduce_sum(tf.square(x1 - tf.matrix_transpose(x2)), axis=1) + self.eclipse)
         return 1 / (1 + euclidean)
 
     def pad_for_wide_conv(self, x):
@@ -288,6 +290,10 @@ class AB_CNN():
             sess.run(tf.global_variables_initializer())
             saver = tf.train.Saver(tf.global_variables())
 
+            # debug
+            # sess = tf_debug.LocalCLIDebugWrapperSession(sess)
+            # sess.add_tensor_filter('has_inf_or_nan', tf_debug.has_inf_or_nan)
+
             if os.path.exists(save_path):
                 try:
                     ckpt = tf.train.get_checkpoint_state(save_path)
@@ -300,7 +306,7 @@ class AB_CNN():
             for epoch in range(self.n_epoch):
                 for iteration in range(length//self.batch_size):
                     train_feed_dict = self.gen_train_dict(iteration, train_questions, train_answers, train_labels, True)
-                    _, train_loss, train_acc, current_step = sess.run([self.train_op, self.cost, self.accuracy,global_steps], feed_dict = train_feed_dict)
+                    train_loss, train_acc, current_step, _ = sess.run([self.cost, self.accuracy, global_steps, self.train_op], feed_dict = train_feed_dict)
                     if current_step % 128 == 0:
                         test_feed_dict = self.gen_test_dict(test_questions, test_answers, test_labels)
                         test_loss = self.cost.eval(feed_dict = test_feed_dict)
@@ -403,7 +409,7 @@ class AB_CNN():
         return feed_dict
 
 if __name__ == '__main__':
-    ABCNN = AB_CNN(model_type='ABCNN2', clip_gradients=False)
+    ABCNN = AB_CNN(model_type='ABCNN3', clip_gradients=False)
     #ABCNN.train()
     ABCNN.test()
 
